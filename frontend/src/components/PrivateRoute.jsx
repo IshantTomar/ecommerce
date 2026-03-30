@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import api from '../api/api';
-import { getAccessToken, clearAccessToken } from '../api/tokenStore';
+import api from '../services/api';
+import { getAccessToken, clearAccessToken } from '../utils/tokenStore';
 
 const PrivateRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);

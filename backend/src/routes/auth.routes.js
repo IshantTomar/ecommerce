@@ -20,6 +20,6 @@ router.post('/login', loginUserValidationRules, login);
 router.post('/refresh', refresh);
 router.post('/logout', authMiddleware, logout);
 router.post('/logout-all', authMiddleware, logoutAll);
-router.get('/me', authMiddleware, getCurrentUser);
+router.get('/getMe', authMiddleware, getCurrentUser);
 
 export default router;

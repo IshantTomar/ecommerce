@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '../api/auth';
-import { setAccessToken } from '../api/tokenStore';
+import { login } from '../services/authService';
+import { setAccessToken } from '../utils/tokenStore';
+import { getMe } from '../services/userService';
+import useUserStore from '../store/useUserStore';
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -17,6 +18,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const setUser = useUserStore((state) => state.setUser);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,15 +59,18 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const response = await loginUser(form);
+      const response = await login(form);
       const { accessToken } = response.data;
       setAccessToken(accessToken);
 
-      navigate('/products');
-      console.log(response.data);
-    } catch (error) {
-      const data = error.response?.data;
+      const userResponse = await getMe();
+      setUser(userResponse.data.user);
 
+      navigate('/dashboard');
+    } catch (error) {
+      console.error(error);
+
+      const data = error.response?.data;
       // Case 1: validation errors (array)
       if (data?.errors) {
         const newErrors = {};
