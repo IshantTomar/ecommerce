@@ -4,6 +4,7 @@ import { login } from '../services/authService';
 import { setAccessToken } from '../utils/tokenStore';
 import { getMe } from '../services/userService';
 import useUserStore from '../store/useUserStore';
+import { useSearchParams } from 'react-router-dom';
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -20,6 +21,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const setUser = useUserStore((state) => state.setUser);
+
+  const [searchParams] = useSearchParams();
+  const isCompromised = searchParams.get('reason') === 'compromised';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,6 +106,11 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="flex flex-col w-full px-8 pt-8 pb-6">
             <h1 className="text-center text-4xl font-extrabold mb-6">Login</h1>
 
+            {isCompromised && (
+              <p className="pl-4 bg-red-950 text-red-200 text-lg rounded-xl border border-red-400 py-2 mb-4">
+                Session compromised. Please login again.
+              </p>
+            )}
             {serverError && typeof serverError === 'string' && (
               <p className="pl-4 bg-red-950 text-red-200 text-lg rounded-xl border border-red-400 py-2 mb-4">
                 {serverError}

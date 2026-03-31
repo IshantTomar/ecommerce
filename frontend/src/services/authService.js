@@ -11,3 +11,7 @@ export const register = (userData) => {
 export const logout = () => {
   return api.post('/auth/logout');
 };
+
+export const logoutAll = () => {
+  return api.post('/auth/logout-all');
+};
