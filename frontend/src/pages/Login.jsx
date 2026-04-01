@@ -98,6 +98,8 @@ const Login = () => {
     }
   };
 
+  console.log('API URL:', import.meta.env.VITE_API_URL);
+
   return (
     <>
       <div className="flex items-center justify-center min-h-screen">
