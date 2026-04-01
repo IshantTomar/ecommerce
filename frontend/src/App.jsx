@@ -31,8 +31,6 @@ const App = () => {
 
   if (checking) return null; // or a spinner
 
-  console.log('API URL:', import.meta.env.VITE_API_URL);
-
   return (
     <BrowserRouter>
       <Routes>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { register } from '../services/authService';
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -56,8 +57,8 @@ const Register = () => {
 
     console.log(form);
     // API call goes here
-    const response = await axios.post('http://localhost:3000/api/auth/register', form);
-    console.log(response);
+    const response = await register(form);
+    console.log(register);
   };
 
   return (
