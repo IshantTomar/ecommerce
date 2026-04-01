@@ -38,7 +38,6 @@ const Login = () => {
       [name]: '',
     }));
 
-    // optional: also clear general server error
     setServerError('');
   };
 
