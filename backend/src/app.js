@@ -27,4 +27,12 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/', productsRouter);
 
+app.get('/', (req, res) => {
+  return res
+    .status(200)
+    .send(
+      '<div> Please click on the link too see frontend: <a href="https://ecommerce-snowy-two-67.vercel.app">Visit Frontend</a><div>'
+    );
+});
+
 export default app;
