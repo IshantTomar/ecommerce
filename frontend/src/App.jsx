@@ -13,8 +13,11 @@ const App = () => {
   const setUser = useUserStore((state) => state.setUser);
   const clearUser = useUserStore((state) => state.clearUser);
   const [checking, setChecking] = useState(true);
+  const [slowLoad, setSlowLoad] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => setSlowLoad(true), 3000);
+
     const verifyUser = async () => {
       try {
         const response = await getMe();
@@ -22,6 +25,8 @@ const App = () => {
       } catch (error) {
         clearUser();
       } finally {
+        clearTimeout(timer);
+        setSlowLoad(false);
         setChecking(false);
       }
     };
@@ -29,7 +34,16 @@ const App = () => {
     verifyUser();
   }, []);
 
-  if (checking) return null; // or a spinner
+  if (checking)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-3">
+        {slowLoad && (
+          <p className="text-gray-400 text-sm">
+            Backend is waking up, this may take up to 60 seconds...
+          </p>
+        )}
+      </div>
+    );
 
   return (
     <BrowserRouter>
