@@ -3,7 +3,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/products', authMiddleware, (req, res) => {
+router.get('/product', authMiddleware, (req, res) => {
   res.json('Hallo!');
 });
 

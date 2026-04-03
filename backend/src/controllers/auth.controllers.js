@@ -8,13 +8,18 @@ import jwt from 'jsonwebtoken';
 // register controller
 export async function register(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     const errors = {};
 
     if (!username) errors.username = 'Username is required';
     if (!email) errors.email = 'Email is required';
     if (!password) errors.password = 'Password is required';
+    if (!role) {
+      errors.role = 'Role is required';
+    } else if (role !== 'user' && role !== 'seller') {
+      errors.role = 'Role must be either user or seller';
+    }
 
     if (password && password.length < 6) errors.password = 'Password must be at least 6 characters';
 
@@ -28,7 +33,7 @@ export async function register(req, res) {
     // hash passoword
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({ username, email, password: hashedPassword });
+    const user = new User({ username, email, password: hashedPassword, role });
 
     // save user to database
     await user.save();
@@ -70,6 +75,10 @@ export async function login(req, res) {
       return res.status(401).json({ message: 'must provide either a username or an email' });
     }
 
+    if (!password) {
+      return res.status(400).json({ message: 'password is required' });
+    }
+
     // find user in database
     const user = await User.findOne({
       $or: [{ username }, { email }],
@@ -88,8 +97,8 @@ export async function login(req, res) {
     }
 
     //generate accessToken and refreshToken
-    const accessToken = generateAccessToken(user._id);
-    const refreshToken = generateRefreshToken(user._id);
+    const accessToken = generateAccessToken(user._id, user.role);
+    const refreshToken = generateRefreshToken(user._id, user.role);
 
     // hash refreshToken
     const hashedRefreshToken = hashToken(refreshToken);
@@ -98,6 +107,7 @@ export async function login(req, res) {
     const session = new Session({
       userId: user._id,
       refreshToken: hashedRefreshToken,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
 
     await session.save();
@@ -161,8 +171,8 @@ export async function refresh(req, res) {
     await Session.deleteOne({ _id: session._id });
 
     // generate new tokens
-    const newAccessToken = generateAccessToken(decoded.id);
-    const newRefreshToken = generateRefreshToken(decoded.id);
+    const newAccessToken = generateAccessToken(decoded.id, decoded.role);
+    const newRefreshToken = generateRefreshToken(decoded.id, decoded.role);
 
     // hash new refresh token
     const newHashedRefreshToken = hashToken(newRefreshToken);
@@ -171,6 +181,7 @@ export async function refresh(req, res) {
     await Session.create({
       userId: decoded.id,
       refreshToken: newHashedRefreshToken,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
 
     // give new refresh token to user in cookie
@@ -178,7 +189,7 @@ export async function refresh(req, res) {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     // give new access token to user
@@ -242,7 +253,7 @@ export async function getCurrentUser(req, res) {
 
     res.json({ user });
   } catch (err) {
-    console.error(err);
+    console.error('error in getCurrentUser controller', err);
     res.status(500).json({ message: 'Server error' });
   }
 }

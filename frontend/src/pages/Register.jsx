@@ -8,6 +8,7 @@ const Register = () => {
     username: '',
     email: '',
     password: '',
+    role: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -37,6 +38,10 @@ const Register = () => {
       newErrors.password = 'Password is required';
     } else if (data.password.length < 6 || data.password.length > 16) {
       newErrors.password = 'Password must be between 6 to 16 characters';
+    }
+
+    if (!data.role) {
+      newErrors.role = 'Role is required';
     }
 
     return newErrors;
@@ -106,12 +111,14 @@ const Register = () => {
         <div className="border-2 border-indigo-900 w-full max-w-md bg-gray-900 rounded-3xl shadow-xl shadow-zinc-950 flex flex-col overflow-hidden">
           <form onSubmit={handleSubmit} className="flex flex-col w-full px-8 pt-8 pb-6">
             <h1 className="text-center text-4xl font-extrabold mb-6">Register</h1>
+
             {serverError && typeof serverError === 'string' && (
               <p className="pl-4 bg-red-950 text-red-200 text-lg rounded-xl border border-red-400 py-2 mb-4">
                 {serverError}
               </p>
             )}
-            <p className="font-bold text-lg">Username:</p>
+
+            <p className="font-bold text-lg mt-4">Username:</p>
             <input
               name="username"
               type="text"
@@ -125,7 +132,7 @@ const Register = () => {
               <p className="text-red-400 text-sm pl-2 mt-1">{serverError.username}</p>
             )}
 
-            <p className="font-bold text-lg">Email:</p>
+            <p className="font-bold text-lg mt-4">Email:</p>
             <input
               name="email"
               type="text"
@@ -139,7 +146,7 @@ const Register = () => {
               <p className="text-red-400 text-sm pl-2 mt-1">{serverError.email}</p>
             )}
 
-            <p className="font-bold text-lg">Password:</p>
+            <p className="font-bold text-lg mt-4">Password:</p>
             <input
               name="password"
               type="password"
@@ -151,6 +158,32 @@ const Register = () => {
             {errors.password && <p className="text-red-400 text-sm pl-2 mt-1">{errors.password}</p>}
             {serverError?.password && (
               <p className="text-red-400 text-sm pl-2 mt-1">{serverError.password}</p>
+            )}
+
+            <p className="font-bold text-lg mt-4">Role:</p>
+            <div className="relative mt-2">
+              <select
+                name="role"
+                value={form.role}
+                onChange={handleChange}
+                className="appearance-none pl-4 pr-10 py-2 bg-gray-800 w-full border border-indigo-500 rounded-xl outline-none focus:border-indigo-400 focus:border-2 transition"
+              >
+                <option value="" disabled>
+                  Select role
+                </option>
+                <option value="user">User</option>
+                <option value="seller">Seller</option>
+              </select>
+
+              {/* Custom arrow */}
+              <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                ▼
+              </div>
+            </div>
+
+            {errors.role && <p className="text-red-400 text-sm pl-2 mt-1">{errors.role}</p>}
+            {serverError?.role && (
+              <p className="text-red-400 text-sm pl-2 mt-1">{serverError.role}</p>
             )}
 
             <button

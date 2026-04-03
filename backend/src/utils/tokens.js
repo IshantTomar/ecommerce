@@ -2,12 +2,12 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import config from '../config/config.js';
 
-export function generateAccessToken(userId) {
-  return jwt.sign({ id: userId }, config.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+export function generateAccessToken(userId, role) {
+  return jwt.sign({ id: userId, role }, config.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 }
 
-export function generateRefreshToken(userId) {
-  return jwt.sign({ id: userId }, config.REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+export function generateRefreshToken(userId, role) {
+  return jwt.sign({ id: userId, role }, config.REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
 }
 
 export function hashToken(token) {

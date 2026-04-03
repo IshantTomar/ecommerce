@@ -1,6 +1,6 @@
 import express from 'express';
 import authRouter from './routes/auth.routes.js';
-import productsRouter from './routes/products.routes.js';
+import productsRouter from './routes/product.routes.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import config from './config/config.js';
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   return res
     .status(200)
     .send(
-      '<div> Please click on the link too see frontend: <a href="https://ecommerce-snowy-two-67.vercel.app">Visit Frontend</a><div>'
+      `<div> Please click on the link too see frontend:<a href="${config.ALLOWED_ORIGINS.split(',').at(-1)}">Visit Frontend</a><div>`
     );
 });
 
