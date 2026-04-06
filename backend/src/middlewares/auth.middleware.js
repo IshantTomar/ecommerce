@@ -6,7 +6,9 @@ export function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res
+        .status(401)
+        .json({ message: 'Unauthorized, you must be logged in to access this resource.' });
     }
 
     const token = authHeader.split(' ')[1];
@@ -21,6 +23,6 @@ export function authMiddleware(req, res, next) {
     }
   } catch (err) {
     console.error('error in authMiddleware', err);
-    res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: 'Server error' });
   }
 }

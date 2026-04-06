@@ -254,6 +254,6 @@ export async function getCurrentUser(req, res) {
     res.json({ user });
   } catch (err) {
     console.error('error in getCurrentUser controller', err);
-    res.status(500).json({ message: 'Server error' });
+    return res.status(500).json({ message: 'Server error' });
   }
 }
