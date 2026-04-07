@@ -2,7 +2,11 @@ import express from 'express';
 import multer, { memoryStorage } from 'multer';
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { roleMiddleware } from '../middlewares/role.middleware.js';
-import { uploadProduct } from '../controllers/product.controllers.js';
+import {
+  getAllProducts,
+  uploadProduct,
+  deleteProduct,
+} from '../controllers/product.controllers.js';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -10,9 +14,7 @@ const upload = multer({
 
 const router = express.Router();
 
-router.get('/product', authMiddleware, (req, res) => {
-  res.json('Hallo!');
-});
+router.get('/products', authMiddleware, getAllProducts);
 
 router.post(
   '/upload-product',
@@ -21,5 +23,7 @@ router.post(
   upload.single('productImage'),
   uploadProduct
 );
+
+router.post('/delete-product/:id', authMiddleware, roleMiddleware('seller'), deleteProduct);
 
 export default router;

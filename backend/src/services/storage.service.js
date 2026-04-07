@@ -6,7 +6,7 @@ const ImageKitClient = new ImageKit({
   privateKey: config.IMAGEKIT_PRIVATE_KEY,
 });
 
-async function uploadProductImage(file) {
+export async function uploadProductImage(file) {
   try {
     const result = await ImageKitClient.files.upload({
       file: file.buffer.toString('base64'),
@@ -20,4 +20,15 @@ async function uploadProductImage(file) {
   }
 }
 
-export default uploadProductImage;
+export async function deleteProductImage(fileId) {
+  try {
+    await ImageKitClient.files.delete(fileId);
+  } catch (err) {
+    if (err?.code === 404) {
+      console.warn('Image already deleted or not found');
+    } else {
+      console.error('Error deleting image:', err);
+      throw err;
+    }
+  }
+}

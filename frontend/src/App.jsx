@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './router/ProtectedRoute';
 import Products from './pages/Products';
+import NotFound from './pages/NotFound';
 import { getMe } from './services/userService';
 import useUserStore from './store/useUserStore';
 
@@ -48,6 +49,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
