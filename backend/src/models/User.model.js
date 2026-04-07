@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'password is required'],
       minlength: [6, 'password must be between 6 to 16 characters'],
+      select: false,
     },
     role: {
       type: String,
@@ -33,7 +34,16 @@ const userSchema = new mongoose.Schema(
       required: [true, 'role is required'],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  }
 );
 
 const User = mongoose.model('User', userSchema);

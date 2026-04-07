@@ -33,12 +33,15 @@ const Header = () => {
           </span>
 
           <div className="absolute right-0 mt-1 w-48 bg-gray-900 border border-indigo-900 rounded shadow-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-20">
-            <Link
-              className="block px-4 py-2 hover:bg-gray-800 hover:text-indigo-400 hover:underline"
-              to="/manage-products"
-            >
-              Manage Products
-            </Link>
+            {/* Show only if user is a seller */}
+            {user?.role === 'seller' && (
+              <Link
+                to="/manage-products"
+                className="block px-4 py-2 hover:text-indigo-400 hover:underline"
+              >
+                Manage Products
+              </Link>
+            )}
 
             <button
               onClick={handleLogout}

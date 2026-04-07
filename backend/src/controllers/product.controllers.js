@@ -74,3 +74,16 @@ export async function deleteProduct(req, res) {
     return res.status(500).json({ message: 'internal server error' });
   }
 }
+
+export async function getAllUserProducts(req, res) {
+  try {
+    const products = await Product.find(req.user._id).populate('userId', 'username');
+    return res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (err) {
+    console.error('error in getAllUserProducts controller', err);
+    return res.status(500).json({ message: 'internal server error' });
+  }
+}

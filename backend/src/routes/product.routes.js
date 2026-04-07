@@ -6,6 +6,7 @@ import {
   getAllProducts,
   uploadProduct,
   deleteProduct,
+  getAllUserProducts,
 } from '../controllers/product.controllers.js';
 
 const upload = multer({
@@ -16,6 +17,7 @@ const router = express.Router();
 
 router.get('/products', authMiddleware, getAllProducts);
 
+router.get('/getMyProducts', authMiddleware, roleMiddleware('seller'), getAllUserProducts);
 router.post(
   '/upload-product',
   authMiddleware,
@@ -24,6 +26,6 @@ router.post(
   uploadProduct
 );
 
-router.post('/delete-product/:id', authMiddleware, roleMiddleware('seller'), deleteProduct);
+router.delete('/delete-product/:id', authMiddleware, roleMiddleware('seller'), deleteProduct);
 
 export default router;

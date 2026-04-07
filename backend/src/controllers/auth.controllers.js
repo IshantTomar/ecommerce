@@ -65,35 +65,40 @@ export async function login(req, res) {
   try {
     const { username, email, password } = req.body;
 
-    // get either username or email bot both
+    // Must provide either username or email, not both
     if (username && email) {
-      return res.status(401).json({ message: 'provide either a username or an email, not both' });
+      return res.status(400).json({ message: 'Provide either a username or an email, not both' });
     }
 
-    // check either username or email is provided
     if (!username && !email) {
-      return res.status(401).json({ message: 'must provide either a username or an email' });
+      return res.status(400).json({ message: 'Must provide either a username or an email' });
     }
 
     if (!password) {
-      return res.status(400).json({ message: 'password is required' });
+      return res.status(400).json({ message: 'Password is required' });
     }
 
-    // find user in database
-    const user = await User.findOne({
-      $or: [{ username }, { email }],
-    });
+    // Build query dynamically based on what was provided
+    const query = {};
+    if (username) query.username = username;
+    if (email) query.email = email;
 
-    // check if user exists
+    const user = await User.findOne(query).select('+password');
+
     if (!user) {
-      return res.status(404).json({ message: 'user does not exist' });
+      return res.status(404).json({ message: 'User does not exist' });
     }
 
-    // check user password
+    if (!user.password) {
+      // If password field is missing in DB
+      return res.status(500).json({ message: 'User password is missing in database' });
+    }
+
+    // Compare provided password with hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'invalid credentials' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     //generate accessToken and refreshToken
@@ -245,7 +250,7 @@ export async function getCurrentUser(req, res) {
     const userId = req.user.id;
 
     // fetch user from DB, exclude password
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
