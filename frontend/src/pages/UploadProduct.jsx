@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import your API function
 import { uploadProduct } from '../services/productService';
 
 const UploadProduct = () => {
@@ -112,127 +111,134 @@ const UploadProduct = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="border-2 border-indigo-900 w-full max-w-md bg-gray-900 rounded-3xl shadow-xl shadow-zinc-950 flex flex-col overflow-hidden">
-        <form onSubmit={handleSubmit} className="flex flex-col w-full px-8 pt-8 pb-6">
-          <h1 className="text-center text-4xl font-extrabold mb-6">Upload Product</h1>
+    <>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="border-2 border-indigo-900 w-full max-w-md bg-gray-900 rounded-3xl shadow-xl shadow-zinc-950 flex flex-col overflow-hidden">
+          <div className="flex items-center justify-between px-4 pt-4">
+            <button onClick={() => navigate(-1)} className="text-indigo-400 hover:text-indigo-200">
+              ← Back
+            </button>
+          </div>
+          <form onSubmit={handleSubmit} className="flex flex-col w-full px-8 pt-8 pb-6">
+            <h1 className="text-center text-4xl font-extrabold mb-6">Upload Product</h1>
 
-          {serverError && (
-            <p className="pl-4 bg-red-950 text-red-200 text-lg rounded-xl border border-red-400 py-2 mb-4">
-              {serverError}
-            </p>
-          )}
+            {serverError && (
+              <p className="pl-4 bg-red-950 text-red-200 text-lg rounded-xl border border-red-400 py-2 mb-4">
+                {serverError}
+              </p>
+            )}
 
-          {/* Name */}
-          <input
-            name="name"
-            placeholder="Product name"
-            value={form.name}
-            onChange={handleChange}
-            className="mt-2 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
-          />
-          {errors.name && <p className="text-red-400 text-sm">{errors.name}</p>}
-
-          {/* Description */}
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={form.description}
-            onChange={handleChange}
-            className="mt-3 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
-          />
-          {errors.description && <p className="text-red-400 text-sm">{errors.description}</p>}
-
-          {/* Price */}
-          <input
-            name="price"
-            type="number"
-            placeholder="Price"
-            value={form.price}
-            onChange={handleChange}
-            className="mt-3 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
-          />
-          {errors.price && <p className="text-red-400 text-sm">{errors.price}</p>}
-
-          {/* Category */}
-          <div className="relative mt-3">
-            <select
-              name="category"
-              value={form.category}
+            {/* Name */}
+            <input
+              name="name"
+              placeholder="Product name"
+              value={form.name}
               onChange={handleChange}
-              className="appearance-none pl-4 pr-10 py-2 bg-gray-800 w-full border border-indigo-500 rounded-xl outline-none focus:border-indigo-400 focus:border-2 transition"
-            >
-              <option value="" disabled>
-                Select category
-              </option>
-              <option value="food">Food</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="others">Others</option>
-            </select>
+              className="mt-2 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
+            />
+            {errors.name && <p className="text-red-400 text-sm">{errors.name}</p>}
 
-            {/* Custom arrow */}
-            <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-              ▼
-            </div>
-          </div>
+            {/* Description */}
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={form.description}
+              onChange={handleChange}
+              className="mt-3 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
+            />
+            {errors.description && <p className="text-red-400 text-sm">{errors.description}</p>}
 
-          {errors.category && <p className="text-red-400 text-sm pl-2 mt-1">{errors.category}</p>}
+            {/* Price */}
+            <input
+              name="price"
+              type="number"
+              placeholder="Price"
+              value={form.price}
+              onChange={handleChange}
+              className="mt-3 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
+            />
+            {errors.price && <p className="text-red-400 text-sm">{errors.price}</p>}
 
-          {/* Stock */}
-          <input
-            name="stock"
-            type="number"
-            placeholder="Stock"
-            value={form.stock}
-            onChange={handleChange}
-            className="mt-3 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
-          />
-          {errors.stock && <p className="text-red-400 text-sm">{errors.stock}</p>}
-
-          {/* Image */}
-          <div className="mt-3">
-            <label className="block">
-              <span className="sr-only">Choose product image</span>
-
-              <input
-                type="file"
-                name="productImage"
-                accept="image/*"
+            {/* Category */}
+            <div className="relative mt-3">
+              <select
+                name="category"
+                value={form.category}
                 onChange={handleChange}
-                className="hidden"
-                id="fileInput"
-              />
-
-              <label
-                htmlFor="fileInput"
-                className="inline-block px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl cursor-pointer transition"
+                className="appearance-none pl-4 pr-10 py-2 bg-gray-800 w-full border border-indigo-500 rounded-xl outline-none focus:border-indigo-400 focus:border-2 transition"
               >
-                {form.productImage ? 'Change Image' : 'Choose Image'}
+                <option value="" disabled>
+                  Select category
+                </option>
+                <option value="food">Food</option>
+                <option value="electronics">Electronics</option>
+                <option value="fashion">Fashion</option>
+                <option value="others">Others</option>
+              </select>
+
+              {/* Custom arrow */}
+              <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                ▼
+              </div>
+            </div>
+
+            {errors.category && <p className="text-red-400 text-sm pl-2 mt-1">{errors.category}</p>}
+
+            {/* Stock */}
+            <input
+              name="stock"
+              type="number"
+              placeholder="Stock"
+              value={form.stock}
+              onChange={handleChange}
+              className="mt-3 p-2 bg-gray-800 border border-indigo-500 rounded-xl"
+            />
+            {errors.stock && <p className="text-red-400 text-sm">{errors.stock}</p>}
+
+            {/* Image */}
+            <div className="mt-3">
+              <label className="block">
+                <span className="sr-only">Choose product image</span>
+
+                <input
+                  type="file"
+                  name="productImage"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="hidden"
+                  id="fileInput"
+                />
+
+                <label
+                  htmlFor="fileInput"
+                  className="inline-block px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-xl cursor-pointer transition"
+                >
+                  {form.productImage ? 'Change Image' : 'Choose Image'}
+                </label>
               </label>
-            </label>
 
-            {form.productImage && (
-              <p className="text-sm text-gray-400 mt-2">Selected: {form.productImage.name}</p>
-            )}
+              {form.productImage && (
+                <p className="text-sm text-gray-400 mt-2">Selected: {form.productImage.name}</p>
+              )}
 
-            {errors.productImage && (
-              <p className="text-red-400 text-sm mt-1">{errors.productImage}</p>
-            )}
-          </div>
+              {errors.productImage && (
+                <p className="text-red-400 text-sm mt-1">{errors.productImage}</p>
+              )}
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`mt-5 px-5 py-2 rounded-xl ${
-              loading ? 'bg-gray-500' : 'bg-indigo-600 hover:bg-indigo-500'
-            }`}
-          >
-            {loading ? 'Uploading...' : 'Upload'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading}
+              className={`mt-5 px-5 py-2 rounded-xl ${
+                loading ? 'bg-gray-500' : 'bg-indigo-600 hover:bg-indigo-500'
+              }`}
+            >
+              {loading ? 'Uploading...' : 'Upload'}
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

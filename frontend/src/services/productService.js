@@ -20,6 +20,16 @@ export const getMyProducts = async () => {
   }
 };
 
+export const deleteProduct = async (productId) => {
+  try {
+    const response = await api.delete(`/product/delete-product/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to delete product:', error);
+    throw error;
+  }
+};
+
 export const uploadProduct = async (formData) => {
   try {
     const response = await api.post('/product/upload-product', formData, {

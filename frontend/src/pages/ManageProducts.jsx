@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { getMyProducts, deleteProduct } from '../services/productService';
 
@@ -30,6 +31,14 @@ const ManageProducts = () => {
   return (
     <>
       <Header />
+      <div className="flex justify-center mt-5">
+        <Link
+          to="/products/upload-product"
+          className="inline-block px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500"
+        >
+          Upload Products
+        </Link>
+      </div>
       <div className="p-6">
         <h1 className="text-3xl text-white font-bold mb-6 text-center">Your Products</h1>
 

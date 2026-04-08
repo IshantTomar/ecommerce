@@ -19,6 +19,9 @@ const Header = () => {
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-white">
+        <Link to="/dashboard" className="hover:text-indigo-400 hover:underline">
+          Home
+        </Link>
         <Link to="/about" className="hover:text-indigo-400 hover:underline">
           About
         </Link>
@@ -72,6 +75,10 @@ const Header = () => {
         }`}
       >
         <div className="flex flex-col px-4 py-4 gap-3 text-white">
+          <Link to="/dashboard" className="hover:text-indigo-400 hover:underline">
+            Home
+          </Link>
+
           <Link to="/about" onClick={() => setMenuOpen(false)}>
             About
           </Link>
