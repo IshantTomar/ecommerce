@@ -77,7 +77,11 @@ export async function deleteProduct(req, res) {
 
 export async function getAllUserProducts(req, res) {
   try {
-    const products = await Product.find(req.user._id).populate('userId', 'username');
+    const products = await Product.find({ userId: req.user.id }).populate('userId', 'username');
+
+    if (!products) {
+      return res.status(404).json({ message: 'not found' });
+    }
     return res.status(200).json({
       success: true,
       products,

@@ -20,12 +20,17 @@ export const getMyProducts = async () => {
   }
 };
 
-export const deleteProduct = async (productId) => {
+export const uploadProduct = async (formData) => {
   try {
-    const response = await api.delete(`/product/delete-product/${productId}`);
-    return response.data; // optional, in case backend returns success message
+    const response = await api.post('/product/upload-product', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
   } catch (error) {
-    console.error('Failed to delete product:', error);
+    console.error('Failed to upload product:', error);
     throw error;
   }
 };

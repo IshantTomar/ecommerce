@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound';
 import ManageProducts from './pages/ManageProducts';
 import { getMe } from './services/userService';
 import useUserStore from './store/useUserStore';
+import UploadProduct from './pages/UploadProduct';
 
 const App = () => {
   const user = useUserStore((state) => state.user);
@@ -57,10 +58,18 @@ const App = () => {
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
         <Route
-          path="/manage-products"
+          path="/products/manage-products"
           element={
             <SellerRoute>
               <ManageProducts />
+            </SellerRoute>
+          }
+        />
+        <Route
+          path="/products/upload-product"
+          element={
+            <SellerRoute>
+              <UploadProduct />
             </SellerRoute>
           }
         />

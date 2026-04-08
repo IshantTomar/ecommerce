@@ -36,7 +36,7 @@ const Header = () => {
             {/* Show only if user is a seller */}
             {user?.role === 'seller' && (
               <Link
-                to="/manage-products"
+                to="/products/manage-products"
                 className="block px-4 py-2 hover:text-indigo-400 hover:underline"
               >
                 Manage Products
@@ -84,9 +84,14 @@ const Header = () => {
 
           <span className="text-sm text-gray-400">{user?.username}</span>
 
-          <Link to="/manage-products" onClick={() => setMenuOpen(false)}>
-            Manage Products
-          </Link>
+          {user?.role === 'seller' && (
+            <Link
+              to="/products/manage-products"
+              className="block px-4 py-2 hover:text-indigo-400 hover:underline"
+            >
+              Manage Products
+            </Link>
+          )}
 
           <button onClick={handleLogout} className="text-left">
             Logout
